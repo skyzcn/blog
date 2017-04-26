@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>工作相关的代码整理 | 老代码</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="" />
+    
+    <meta name="description" content="工具发送邮件 cux_fnd_sendmail_pkg多个附件1234567891011121314151617181920212223242526DECLARE  l_attachment_table cux_fnd_sendmail_pkg.t_attach_blob_table;  ...BEGIN  ...  --添加到附件表  l_attachment_table(1).t_name">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="工作相关的代码整理">
+<meta property="og:url" content="http://oracle.xyz/posts/common-sql-package.html">
+<meta property="og:site_name" content="老代码">
+<meta property="og:description" content="工具发送邮件 cux_fnd_sendmail_pkg多个附件1234567891011121314151617181920212223242526DECLARE  l_attachment_table cux_fnd_sendmail_pkg.t_attach_blob_table;  ...BEGIN  ...  --添加到附件表  l_attachment_table(1).t_name">
+<meta property="og:image" content="http://oracle.xyz/gallery/package.jpg">
+<meta property="og:updated_time" content="2017-04-26T12:11:52.058Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="工作相关的代码整理">
+<meta name="twitter:description" content="工具发送邮件 cux_fnd_sendmail_pkg多个附件1234567891011121314151617181920212223242526DECLARE  l_attachment_table cux_fnd_sendmail_pkg.t_attach_blob_table;  ...BEGIN  ...  --添加到附件表  l_attachment_table(1).t_name">
+<meta name="twitter:image" content="http://oracle.xyz/gallery/package.jpg">
+    
+
+    
+        <link rel="alternate" href="/" title="老代码" type="application/atom+xml" />
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">代码片段</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DB/">DB</a></li></ul>
+                                    
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/about/index.html">关于</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/DB/">DB</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-common-sql-package" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        工作相关的代码整理
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/common-sql-package.html" class="article-date">
+            <time datetime="2017-04-21T13:53:51.000Z" itemprop="datePublished">2017-04-21</time>
+        </a>
+    </div>
+
+                
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <p><img src="/gallery/package.jpg" alt=""></p>
+<h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><h4 id="发送邮件-cux-fnd-sendmail-pkg"><a href="#发送邮件-cux-fnd-sendmail-pkg" class="headerlink" title="发送邮件 cux_fnd_sendmail_pkg"></a>发送邮件 <code>cux_fnd_sendmail_pkg</code></h4><h5 id="多个附件"><a href="#多个附件" class="headerlink" title="多个附件"></a>多个附件</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">DECLARE</div><div class="line">  l_attachment_table cux_fnd_sendmail_pkg.t_attach_blob_table;</div><div class="line">  ...</div><div class="line">BEGIN</div><div class="line">  ...</div><div class="line">  --添加到附件表</div><div class="line">  l_attachment_table(1).t_name := l_attach_file_name;</div><div class="line">  l_attachment_table(1).t_ddl := g_zipped_blob;</div><div class="line">  l_attachment_table(1).t_ext := &apos;zip&apos;;</div><div class="line">  l_attachment_table(1).t_content_type := &apos;multipart/alternative&apos;;</div><div class="line"></div><div class="line">  ...</div><div class="line">  l_attachment_table(2).t_name := l_attach_file_name;</div><div class="line">  l_attachment_table(2).t_ddl := cux_fnd_xls_pkg.finish;</div><div class="line">  l_attachment_table(2).t_ext := &apos;xlsx&apos;;</div><div class="line">  l_attachment_table(2).t_content_type := &apos;multipart/alternative&apos;;</div><div class="line">  </div><div class="line">  ...</div><div class="line">   cux_fnd_sendmail_pkg.send_mail_attach_blob_t_c(p_from_email       =&gt; &apos;erp@oracle.com&apos;,</div><div class="line">				   p_receiver_address =&gt; l_receiver_address,</div><div class="line">				   p_receive_name     =&gt; l_receiver_address,</div><div class="line">				   p_email_subject    =&gt; l_email_subject,</div><div class="line">				   p_email_body       =&gt; l_email_body,</div><div class="line">				   p_cc_name          =&gt; l_cc_address,</div><div class="line">				   p_attachment_table =&gt; l_attachment_table);  </div><div class="line">END;</div></pre></td></tr></table></figure>
+<h5 id="图文"><a href="#图文" class="headerlink" title="图文"></a>图文</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">cux_fnd_sendmail_pkg.send_mail_with_image(p_from_email       =&gt; v_sender_email,</div><div class="line">				 p_receiver_address =&gt; c_per.email_address,</div><div class="line">				 p_receive_name     =&gt; c_per.last_name,</div><div class="line">				 p_email_subject    =&gt; v_mail_title,</div><div class="line">				 p_email_body       =&gt; v_mail_body,</div><div class="line">				 p_cc_name          =&gt; v_cc_email,</div><div class="line">				 p_attachment_table =&gt; v_attach_blob_table);</div></pre></td></tr></table></figure>
+<h4 id="markdown-cux-fnd-markdown-pkg"><a href="#markdown-cux-fnd-markdown-pkg" class="headerlink" title="markdown  cux_fnd_markdown_pkg"></a>markdown  <code>cux_fnd_markdown_pkg</code></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cux_pay_tax_plan_pkg.report</div></pre></td></tr></table></figure>
+<h4 id="汉字转拼音-cux-fnd-pinyin-pkg"><a href="#汉字转拼音-cux-fnd-pinyin-pkg" class="headerlink" title="汉字转拼音 cux_fnd_pinyin_pkg"></a>汉字转拼音 <code>cux_fnd_pinyin_pkg</code></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT cux_fnd_pinyin_pkg.gethzfullpy(&apos;程宣峰&apos;) FROM dual</div></pre></td></tr></table></figure>
+<h4 id="读取excel的内容-cux-fnd-read-xlsx-pkg"><a href="#读取excel的内容-cux-fnd-read-xlsx-pkg" class="headerlink" title="读取excel的内容  cux_fnd_read_xlsx_pkg"></a>读取excel的内容  <code>cux_fnd_read_xlsx_pkg</code></h4><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* 不建临时表使用excel上传文件. */</span></div><div class="line">cux_per_upload_email_pkg</div></pre></td></tr></table></figure>
+<h4 id="创建excel-cux-fnd-xls-pkg"><a href="#创建excel-cux-fnd-xls-pkg" class="headerlink" title="创建excel  cux_fnd_xls_pkg"></a>创建excel  <code>cux_fnd_xls_pkg</code></h4><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 创建excel报表  </span></div><div class="line">cux_hcm_abs_deduct_pkg.report</div></pre></td></tr></table></figure>
+<h4 id="压缩文件"><a href="#压缩文件" class="headerlink" title="压缩文件"></a>压缩文件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">DECLARE</div><div class="line">  g_zipped_blob BLOB;</div><div class="line">BEGIN</div><div class="line">  FOR rec IN csr LOOP</div><div class="line">    cux_fnd_xls_pkg.add1file(g_zipped_blob,</div><div class="line">                             rec.file_name,</div><div class="line">                             rec.attachment_content);</div><div class="line">    cux_fnd_xls_pkg.finish_zip(g_zipped_blob, &apos;&apos;);</div><div class="line">  END LOOP;</div><div class="line">END;</div></pre></td></tr></table></figure>
+<h4 id="BPM-流程"><a href="#BPM-流程" class="headerlink" title="BPM 流程"></a>BPM 流程</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 启动流程</span></div><div class="line">cux_bpm_utility_pkg.create_process</div><div class="line"><span class="comment">// 启动空流程</span></div><div class="line">cux_bpm_utility_pkg.create_notify</div><div class="line"><span class="comment">// 撤回</span></div><div class="line">cux_bpm_utility_pkg.abort_process</div><div class="line"><span class="comment">// 审批通过</span></div><div class="line">cux_bpm_utility_pkg.approve_process</div><div class="line"><span class="comment">// 拒绝</span></div><div class="line">cux_bpm_utility_pkg.reject_process</div><div class="line"><span class="comment">// 当前审批人</span></div><div class="line">cux_bpm_common_pkg.get_uuap_username</div><div class="line"><span class="comment">// 当前审批节点</span></div><div class="line">cux_bpm_utility_pkg.get_current_task_val</div></pre></td></tr></table></figure>
+<h4 id="MQ-数据同步"><a href="#MQ-数据同步" class="headerlink" title="MQ 数据同步"></a>MQ 数据同步</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">hcm_common_pkg.call_plsql_main_json(p_plsql_api =&gt; &apos;cux_hcm_bo_pkg.get_pay_lines&apos;,</div><div class="line">				  p_msg_json  =&gt; l_msg,</div><div class="line">				  p_http_apex =&gt; &apos;APEX&apos;,</div><div class="line">				  o_errcode   =&gt; o_errcode,</div><div class="line">				  o_errmsg    =&gt; o_errmsg);</div></pre></td></tr></table></figure>
+<h4 id="百度hi通知接口"><a href="#百度hi通知接口" class="headerlink" title="百度hi通知接口"></a>百度hi通知接口</h4><p> 待整理</p>
+<h4 id="调用波塞冬的服务"><a href="#调用波塞冬的服务" class="headerlink" title="调用波塞冬的服务"></a>调用波塞冬的服务</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">bp_databus_api_pkg.start_di_flow(p_di_request_id          =&gt; -1,</div><div class="line">				 p_di_channel_code        =&gt; &apos;PN_DC_UNFIN_PERMISSION&apos;,</div><div class="line">				 p_di_transformation_code =&gt; &apos;APPLAT_UNFIN_PERMISSION&apos;,</div><div class="line">				 p_di_job_codes           =&gt; &apos;UNFIN_PERMISSION_USERINFO,UNFIN_PERMISSION_DUTY,UNFIN_PERMISSION_USERDUTY&apos;,</div><div class="line">				 p_di_business_batch_num  =&gt; &apos;p_di_business_batch_num&apos;,</div><div class="line">				 p_di_operator            =&gt; &apos;p_di_operator&apos;,</div><div class="line">				 p_di_batch_num           =&gt; &apos;1,1,1&apos;,</div><div class="line">				 p_di_batch_sizes         =&gt; l_di_batch_size,</div><div class="line">				 o_ret_code               =&gt; l_error_code,</div><div class="line">				 o_ret_msg                =&gt; l_error_msg);</div></pre></td></tr></table></figure>
+<h4 id="FYI小熊通知"><a href="#FYI小熊通知" class="headerlink" title="FYI小熊通知"></a>FYI小熊通知</h4><p>主库小熊通知表: cux_ext_notifications_pub.create_fyi_msg<br>分库小熊通知表: cux_ext_polar_fyi_pub.create_fyi_msg</p>
+<h4 id="MD5加密"><a href="#MD5加密" class="headerlink" title="MD5加密"></a>MD5加密</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT utl_raw.cast_to_raw(dbms_obfuscation_toolkit.md5(input_string =&gt; &apos;chengxuanfeng&apos;)) FROM dual;</div></pre></td></tr></table></figure>
+<h4 id="对url进行编码和解码"><a href="#对url进行编码和解码" class="headerlink" title="对url进行编码和解码"></a>对url进行编码和解码</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">BEGIN</div><div class="line">  dbms_output.put_line(utl_url.escape(&apos;http://www.baidu.com/参数/=+/&apos;,TRUE,&apos;UTF8&apos;));</div><div class="line">  dbms_output.put_line(utl_url.escape(&apos;http://www.baidu.com/参数/=+/&apos;,false,&apos;UTF8&apos;));</div><div class="line">  dbms_output.put_line( utl_url.unescape(&apos;http%3A%2F%2Fwww.baidu.com%2F%E5%8F%82%E6%95%B0%2F%3D%2B%2F&apos;,&apos;UTF8&apos;));</div><div class="line">END;</div></pre></td></tr></table></figure>
+<h4 id="调用web请求"><a href="#调用web请求" class="headerlink" title="调用web请求"></a>调用web请求</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line">FUNCTION get_audio(p_text IN VARCHAR2) RETURN BLOB IS</div><div class="line">  l_req_blob BLOB;</div><div class="line">  l_res_blob BLOB;</div><div class="line">  l_url      VARCHAR2(32767) := get_tts_url();</div><div class="line">  l_cuid     VARCHAR2(32767);</div><div class="line">  l_req      utl_http.req;</div><div class="line">  l_res      utl_http.resp;</div><div class="line">BEGIN</div><div class="line">  SELECT instance || &apos;-&apos; || &apos;-&apos; || userenv(&apos;sessionid&apos;)</div><div class="line">    INTO l_cuid</div><div class="line">    FROM v$thread;</div><div class="line">  l_url := REPLACE(l_url, &apos;#text#&apos;, p_text || chr(38));</div><div class="line">  l_url := REPLACE(l_url, &apos;#token#&apos;, get_access_token);</div><div class="line">  l_url := REPLACE(l_url, &apos;#cuid#&apos;, l_cuid);</div><div class="line">  log(l_url);</div><div class="line"></div><div class="line">  l_req := utl_http.begin_request(l_url, &apos;GET&apos;);</div><div class="line">  dbms_lob.createtemporary(lob_loc =&gt; l_req_blob, cache =&gt; FALSE);</div><div class="line">  utl_http.write_raw(l_req, l_req_blob);</div><div class="line"></div><div class="line">  l_res := utl_http.get_response(l_req);</div><div class="line"></div><div class="line">  dbms_output.put_line(&apos;Response&gt; status_code: &quot;&apos; || l_res.status_code || &apos;&quot;&apos;);</div><div class="line">  dbms_output.put_line(&apos;Response&gt; reason_phrase: &quot;&apos; ||</div><div class="line">                       l_res.reason_phrase || &apos;&quot;&apos;);</div><div class="line">  dbms_output.put_line(&apos;Response&gt; http_version: &quot;&apos; || l_res.http_version || &apos;&quot;&apos;);</div><div class="line"></div><div class="line">  DECLARE</div><div class="line">    l_raw_data RAW(512);</div><div class="line">    --chunk_size CONSTANT INTEGER := 512;</div><div class="line">  BEGIN</div><div class="line">    dbms_lob.createtemporary(l_res_blob, FALSE);</div><div class="line">    LOOP</div><div class="line">      BEGIN</div><div class="line">        utl_http.read_raw(l_res, l_raw_data);</div><div class="line">        IF l_raw_data IS NOT NULL THEN</div><div class="line">          dbms_lob.writeappend(l_res_blob,</div><div class="line">                               utl_raw.length(l_raw_data),</div><div class="line">                               l_raw_data);</div><div class="line">        END IF;</div><div class="line">      EXCEPTION</div><div class="line">        WHEN utl_http.end_of_body THEN</div><div class="line">          utl_http.end_response(l_res);</div><div class="line">          EXIT;</div><div class="line">      END;</div><div class="line">    END LOOP;</div><div class="line">  END;</div><div class="line"></div><div class="line">  IF l_req.private_hndl IS NOT NULL THEN</div><div class="line">    utl_http.end_request(l_req);</div><div class="line">  END IF;</div><div class="line"></div><div class="line">  IF l_res.private_hndl IS NOT NULL THEN</div><div class="line">    utl_http.end_response(l_res);</div><div class="line">  END IF;</div><div class="line">  --dbms_lob.freetemporary(l_res_blob);</div><div class="line"></div><div class="line">  RETURN l_res_blob;</div><div class="line">END;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">--发送hi, 默认文本.</div><div class="line"> PROCEDURE hi(p_message_type IN VARCHAR2 := &apos;text&apos;,</div><div class="line">              p_hi_number    IN VARCHAR2,</div><div class="line">              p_content      IN VARCHAR2) IS</div><div class="line">   l_response_text VARCHAR2(2000);</div><div class="line">   l_url           VARCHAR2(32767) := get_hi_service();</div><div class="line">   l_payload       CLOB := get_hi_payload();</div><div class="line"> BEGIN</div><div class="line">   l_payload := REPLACE(l_payload, &apos;#MESSAGE_TYPE#&apos;, p_message_type);</div><div class="line">   l_payload := REPLACE(l_payload, &apos;#HI_NUMBER#&apos;, p_hi_number);</div><div class="line">   l_payload := REPLACE(l_payload, &apos;#CONTENT#&apos;, p_content);</div><div class="line">   --</div><div class="line">   apex_web_service.g_request_headers(1).name := &apos;Content-Type&apos;;</div><div class="line">   apex_web_service.g_request_headers(1).value := &apos;application/x-www-form-urlencoded&apos;;</div><div class="line">   l_response_text := apex_web_service.make_rest_request(p_url         =&gt; l_url,</div><div class="line">                                                         p_http_method =&gt; &apos;POST&apos;,</div><div class="line">                                                         p_body        =&gt; l_payload);</div><div class="line">   log(l_response_text);</div><div class="line"> END;</div></pre></td></tr></table></figure>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="http://oracle.xyz/posts/common-sql-package.html" data-id="cj1yeot750002qcvp31vo7cb1" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="twitter" href="/" target="_blank">
+                        <i class="icon fa fa-twitter"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="/" target="_blank">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="google-plus" href="/" target="_blank">
+                        <i class="icon fa fa-google-plus"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="/" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="weibo" href="/" target="_blank">
+                        <i class="icon fa fa-weibo"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/common-sql-query.html" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            日常运维的查询 - FND
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/common-sql-package.html" class="thumbnail">
+    
+    
+        <span style="background-image:url(/gallery/package.jpg)" alt="工作相关的代码整理" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/DB/">DB</a></p>
+                            <p class="item-title"><a href="/posts/common-sql-package.html" class="title">工作相关的代码整理</a></p>
+                            <p class="item-date"><time datetime="2017-04-21T13:53:51.000Z" itemprop="datePublished">2017-04-21</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/common-sql-query.html" class="thumbnail">
+    
+    
+        <span style="background-image:url(/gallery/alert.jpg)" alt="日常运维的查询 - FND" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/DB/">DB</a></p>
+                            <p class="item-title"><a href="/posts/common-sql-query.html" class="title">日常运维的查询 - FND</a></p>
+                            <p class="item-date"><time datetime="2017-04-21T09:41:51.000Z" itemprop="datePublished">2017-04-21</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/DB/">DB</a><span class="category-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://skyz.cn">Sky</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2017 程宣峰</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
