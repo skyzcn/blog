@@ -8,18 +8,18 @@
     
         <meta name="keywords" content="" />
     
-    <meta name="description" content="Alert - 查询预警邮件的日志12345SELECT extractvalue(xmltype(O.&amp;quot;SYS_NC00040$&amp;quot;), &amp;apos;//SUBJECT&amp;apos;) subject       ,to_char(enq_time, &amp;apos;YYYY/MM/DD HH24:MI:SS&amp;apos;) end_time       ,row_number()">
+    <meta name="description" content="Alert - 查询预警邮件的日志SELECT extractvalue(xmltype(O.&amp;quot;SYS_NC00040$&amp;quot;), &amp;apos;//SUBJECT&amp;apos;) subject       ,to_char(enq_time, &amp;apos;YYYY/MM/DD HH24:MI:SS&amp;apos;) end_time       ,row_number() over(">
 <meta name="keywords">
 <meta property="og:type" content="article">
 <meta property="og:title" content="日常运维的查询 - FND">
 <meta property="og:url" content="http://oracle.xyz/posts/common-sql-query.html">
 <meta property="og:site_name" content="老代码">
-<meta property="og:description" content="Alert - 查询预警邮件的日志12345SELECT extractvalue(xmltype(O.&amp;quot;SYS_NC00040$&amp;quot;), &amp;apos;//SUBJECT&amp;apos;) subject       ,to_char(enq_time, &amp;apos;YYYY/MM/DD HH24:MI:SS&amp;apos;) end_time       ,row_number()">
+<meta property="og:description" content="Alert - 查询预警邮件的日志SELECT extractvalue(xmltype(O.&amp;quot;SYS_NC00040$&amp;quot;), &amp;apos;//SUBJECT&amp;apos;) subject       ,to_char(enq_time, &amp;apos;YYYY/MM/DD HH24:MI:SS&amp;apos;) end_time       ,row_number() over(">
 <meta property="og:image" content="http://oracle.xyz/gallery/alert.jpg">
 <meta property="og:updated_time" content="2017-04-26T08:53:08.393Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="日常运维的查询 - FND">
-<meta name="twitter:description" content="Alert - 查询预警邮件的日志12345SELECT extractvalue(xmltype(O.&amp;quot;SYS_NC00040$&amp;quot;), &amp;apos;//SUBJECT&amp;apos;) subject       ,to_char(enq_time, &amp;apos;YYYY/MM/DD HH24:MI:SS&amp;apos;) end_time       ,row_number()">
+<meta name="twitter:description" content="Alert - 查询预警邮件的日志SELECT extractvalue(xmltype(O.&amp;quot;SYS_NC00040$&amp;quot;), &amp;apos;//SUBJECT&amp;apos;) subject       ,to_char(enq_time, &amp;apos;YYYY/MM/DD HH24:MI:SS&amp;apos;) end_time       ,row_number() over(">
 <meta name="twitter:image" content="http://oracle.xyz/gallery/alert.jpg">
     
 
@@ -37,8 +37,6 @@
 
     <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
     
-    
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
     
     
         <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
@@ -164,10 +162,10 @@
         
         <div class="article-entry" itemprop="articleBody">
             <p><img src="/gallery/alert.jpg" alt=""></p>
-<h3 id="Alert-查询预警邮件的日志"><a href="#Alert-查询预警邮件的日志" class="headerlink" title="Alert - 查询预警邮件的日志"></a>Alert - 查询预警邮件的日志</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">SELECT extractvalue(xmltype(O.&quot;SYS_NC00040$&quot;), &apos;//SUBJECT&apos;) subject</div><div class="line">       ,to_char(enq_time, &apos;YYYY/MM/DD HH24:MI:SS&apos;) end_time</div><div class="line">       ,row_number() over(ORDER BY enq_time DESC) rn</div><div class="line">  FROM apps.wf_notification_out o</div><div class="line"> WHERE o.corrid LIKE &apos;APPS:ALR%&apos;;</div></pre></td></tr></table></figure>
-<h3 id="Concurent"><a href="#Concurent" class="headerlink" title="Concurent"></a>Concurent</h3><h4 id="请求名称对应的可执行文件"><a href="#请求名称对应的可执行文件" class="headerlink" title="请求名称对应的可执行文件"></a>请求名称对应的可执行文件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">SELECT e.execution_file_name </div><div class="line">FROM fnd_concurrent_programs p </div><div class="line">,fnd_executables e </div><div class="line">WHERE p.executable_id = e.executable_id </div><div class="line">AND p.concurrent_program_id IN </div><div class="line">(SELECT t.concurrent_program_id </div><div class="line">FROM fnd_concurrent_programs_tl t </div><div class="line">WHERE t.user_concurrent_program_name = &apos;请求名称&apos;);</div></pre></td></tr></table></figure>
-<h4 id="请求运行时正在执行的SQL"><a href="#请求运行时正在执行的SQL" class="headerlink" title="请求运行时正在执行的SQL"></a>请求运行时正在执行的SQL</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">SELECT s.* </div><div class="line">FROM fnd_concurrent_requests r, v$session v, v$sql s </div><div class="line">WHERE r.oracle_session_id = v.audsid </div><div class="line">AND v.sql_id = s.sql_id </div><div class="line">AND r.request_id = 543339;</div></pre></td></tr></table></figure>
-<h4 id="Apex-restful"><a href="#Apex-restful" class="headerlink" title="Apex restful"></a>Apex restful</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">// 查询</div><div class="line">select * from apex_rest_resource_modules WHERE workspace LIKE &apos;%MQ%&apos;; </div><div class="line">// apex url</div><div class="line">select * from apex_rest_resource_handlers WHERE workspace LIKE &apos;%MQ%&apos;; </div><div class="line">select * from apex_rest_resource_parameters WHERE workspace LIKE &apos;%MQ%&apos;; </div><div class="line">select * from apex_rest_resource_templates WHERE workspace LIKE &apos;%MQ%&apos;;</div><div class="line">// 清空apex的workspace</div><div class="line">BEGIN </div><div class="line">  apex_instance_admin.remove_workspace(&apos;MQBONUS&apos;); </div><div class="line">END;</div></pre></td></tr></table></figure>
+<h3 id="Alert-查询预警邮件的日志"><a href="#Alert-查询预警邮件的日志" class="headerlink" title="Alert - 查询预警邮件的日志"></a>Alert - 查询预警邮件的日志</h3><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">SELECT extractvalue(xmltype(O.&quot;SYS_NC00040$&quot;), &apos;//SUBJECT&apos;) subject</div><div class="line">       ,to_char(enq_time, &apos;YYYY/MM/DD HH24:MI:SS&apos;) end_time</div><div class="line">       ,row_number() over(ORDER BY enq_time DESC) rn</div><div class="line">  FROM apps.wf_notification_out o</div><div class="line"> WHERE o.corrid LIKE &apos;APPS:ALR%&apos;;</div></pre></td></tr></table></figure>
+<h3 id="Concurent"><a href="#Concurent" class="headerlink" title="Concurent"></a>Concurent</h3><h4 id="请求名称对应的可执行文件"><a href="#请求名称对应的可执行文件" class="headerlink" title="请求名称对应的可执行文件"></a>请求名称对应的可执行文件</h4><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">SELECT e.execution_file_name </div><div class="line">FROM fnd_concurrent_programs p </div><div class="line">,fnd_executables e </div><div class="line">WHERE p.executable_id = e.executable_id </div><div class="line">AND p.concurrent_program_id IN </div><div class="line">(SELECT t.concurrent_program_id </div><div class="line">FROM fnd_concurrent_programs_tl t </div><div class="line">WHERE t.user_concurrent_program_name = &apos;请求名称&apos;);</div></pre></td></tr></table></figure>
+<h4 id="请求运行时正在执行的SQL"><a href="#请求运行时正在执行的SQL" class="headerlink" title="请求运行时正在执行的SQL"></a>请求运行时正在执行的SQL</h4><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">SELECT s.* </div><div class="line">FROM fnd_concurrent_requests r, v$session v, v$sql s </div><div class="line">WHERE r.oracle_session_id = v.audsid </div><div class="line">AND v.sql_id = s.sql_id </div><div class="line">AND r.request_id = 543339;</div></pre></td></tr></table></figure>
+<h4 id="Apex-restful"><a href="#Apex-restful" class="headerlink" title="Apex restful"></a>Apex restful</h4><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">// 查询</div><div class="line">select * from apex_rest_resource_modules WHERE workspace LIKE &apos;%MQ%&apos;; </div><div class="line">// apex url</div><div class="line">select * from apex_rest_resource_handlers WHERE workspace LIKE &apos;%MQ%&apos;; </div><div class="line">select * from apex_rest_resource_parameters WHERE workspace LIKE &apos;%MQ%&apos;; </div><div class="line">select * from apex_rest_resource_templates WHERE workspace LIKE &apos;%MQ%&apos;;</div><div class="line">// 清空apex的workspace</div><div class="line">BEGIN </div><div class="line">  apex_instance_admin.remove_workspace(&apos;MQBONUS&apos;); </div><div class="line">END;</div></pre></td></tr></table></figure>
 
         </div>
         <footer class="article-footer">
@@ -175,7 +173,7 @@
 
 
 
-    <a data-url="http://oracle.xyz/posts/common-sql-query.html" data-id="cj21sh0t40004e0vpl209e4p0" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://oracle.xyz/posts/common-sql-query.html" data-id="cj21ug7b50002n0vp80voiufd" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -407,7 +405,11 @@
             <ul>
                 
                     <li>
-                        <a href="http://skyz.cn">Sky</a>
+                        <a href="http://www.oracle-developer.net">oracle-developer</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://fex.baidu.com">FEX</a>
                     </li>
                 
             </ul>
@@ -439,16 +441,6 @@
         
 
 
-    
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
     
     
         <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>

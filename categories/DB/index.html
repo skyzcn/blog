@@ -32,8 +32,6 @@
     <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
-    
     
         <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
     
@@ -180,7 +178,7 @@
 
         <p class="article-excerpt">
             创建一个临时表并insert 一百万条记录, 然后读取这一百万条记录写入文件.
-准备创建测试的表123456789101112CREATE TABLE source_data   ( x, y, z   , CONSTRAINT source_data_pk        PRIMARY KEY (x,y,z)   )   ORGANIZATION INDEX   AS      SELECT R
+准备创建测试的表CREATE TABLE source_data   ( x, y, z   , CONSTRAINT source_data_pk        PRIMARY KEY (x,y,z)   )   ORGANIZATION INDEX   AS      SELECT ROWNUM          
         </p>
     </div>
 </article>
@@ -224,7 +222,7 @@
 
         <p class="article-excerpt">
             
-工具发送邮件 cux_fnd_sendmail_pkg多个附件1234567891011121314151617181920212223242526DECLARE  l_attachment_table cux_fnd_sendmail_pkg.t_attach_blob_table;  ...BEGIN  ...  --添加到附件表  l_attachment_table(1).t_name 
+工具发送邮件 cux_fnd_sendmail_pkg多个附件DECLARE  l_attachment_table cux_fnd_sendmail_pkg.t_attach_blob_table;  ...BEGIN  ...  --添加到附件表  l_attachment_table(1).t_name := l_attach_file_name;  l_attachment_table(
         </p>
     </div>
 </article>
@@ -272,7 +270,7 @@
 
         <p class="article-excerpt">
             
-Alert - 查询预警邮件的日志12345SELECT extractvalue(xmltype(O.&quot;SYS_NC00040$&quot;), &apos;//SUBJECT&apos;) subject       ,to_char(enq_time, &apos;YYYY/MM/DD HH24:MI:SS&apos;) end_time       ,row_number() 
+Alert - 查询预警邮件的日志SELECT extractvalue(xmltype(O.&quot;SYS_NC00040$&quot;), &apos;//SUBJECT&apos;) subject       ,to_char(enq_time, &apos;YYYY/MM/DD HH24:MI:SS&apos;) end_time       ,row_number() over(
         </p>
     </div>
 </article>
@@ -436,7 +434,11 @@ Alert - 查询预警邮件的日志12345SELECT extractvalue(xmltype(O.&quot;SYS_
             <ul>
                 
                     <li>
-                        <a href="http://skyz.cn">Sky</a>
+                        <a href="http://www.oracle-developer.net">oracle-developer</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://fex.baidu.com">FEX</a>
                     </li>
                 
             </ul>
@@ -468,16 +470,6 @@ Alert - 查询预警邮件的日志12345SELECT extractvalue(xmltype(O.&quot;SYS_
         
 
 
-    
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
     
     
         <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
