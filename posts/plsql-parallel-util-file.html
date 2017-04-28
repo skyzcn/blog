@@ -3,19 +3,22 @@
 <head>
     <meta charset="utf-8">
     
-    <title>个人介绍 | 老代码</title>
+    <title>PLSQL并行处理的例子-parallel | 老代码</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-    <meta name="description" content="联系方式 手机: 18607935958 (微信) Email: skyz.cn#gmail.com   个人信息 个人标签: 程宣峰  男 32岁 已婚 工作年限: 10年 个人主页: www.skyz.cn 个人介绍: 10多年的Oracle HRMS以及周边系统建设经验.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="个人介绍">
-<meta property="og:url" content="http://oracle.xyz/about/index.html">
+        <meta name="keywords" content="" />
+    
+    <meta name="description" content="创建一个临时表并insert 一百万条记录, 然后读取这一百万条记录写入文件. 准备创建测试的表123456789101112CREATE TABLE source_data   ( x, y, z   , CONSTRAINT source_data_pk        PRIMARY KEY (x,y,z)   )   ORGANIZATION INDEX   AS      SELECT R">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PLSQL并行处理的例子-parallel">
+<meta property="og:url" content="http://oracle.xyz/posts/plsql-parallel-util-file.html">
 <meta property="og:site_name" content="老代码">
-<meta property="og:description" content="联系方式 手机: 18607935958 (微信) Email: skyz.cn#gmail.com   个人信息 个人标签: 程宣峰  男 32岁 已婚 工作年限: 10年 个人主页: www.skyz.cn 个人介绍: 10多年的Oracle HRMS以及周边系统建设经验.">
-<meta property="og:updated_time" content="2017-04-28T12:03:31.424Z">
+<meta property="og:description" content="创建一个临时表并insert 一百万条记录, 然后读取这一百万条记录写入文件. 准备创建测试的表123456789101112CREATE TABLE source_data   ( x, y, z   , CONSTRAINT source_data_pk        PRIMARY KEY (x,y,z)   )   ORGANIZATION INDEX   AS      SELECT R">
+<meta property="og:updated_time" content="2017-04-28T12:51:19.254Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="个人介绍">
-<meta name="twitter:description" content="联系方式 手机: 18607935958 (微信) Email: skyz.cn#gmail.com   个人信息 个人标签: 程宣峰  男 32岁 已婚 工作年限: 10年 个人主页: www.skyz.cn 个人介绍: 10多年的Oracle HRMS以及周边系统建设经验.">
+<meta name="twitter:title" content="PLSQL并行处理的例子-parallel">
+<meta name="twitter:description" content="创建一个临时表并insert 一百万条记录, 然后读取这一百万条记录写入文件. 准备创建测试的表123456789101112CREATE TABLE source_data   ( x, y, z   , CONSTRAINT source_data_pk        PRIMARY KEY (x,y,z)   )   ORGANIZATION INDEX   AS      SELECT R">
     
 
     
@@ -127,37 +130,74 @@
                         <div class="main-body-header">
     <h1 class="header">
     
-    <em class="page-title-link" data-url="/about/index.html">个人介绍</em>
+    <a class="page-title-link" href="/categories/DB/">DB</a>
     </h1>
 </div>
                         <div class="main-body-content">
-                            <article id="page-undefined" class="article article-single article-type-page" itemscope itemprop="blogPost">
+                            <article id="post-plsql-parallel-util-file" class="article article-single article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             <header class="article-header">
                 
     
         <h1 class="article-title" itemprop="name">
-        个人介绍
+        PLSQL并行处理的例子-parallel
         </h1>
     
 
             </header>
         
         
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/plsql-parallel-util-file.html" class="article-date">
+            <time datetime="2017-04-28T11:58:27.000Z" itemprop="datePublished">2017-04-28</time>
+        </a>
+    </div>
+
+                
+            </div>
+        
         
         <div class="article-entry" itemprop="articleBody">
-            <h2 id="联系方式"><a href="#联系方式" class="headerlink" title="联系方式"></a>联系方式</h2><ul>
-<li>手机: 18607935958 (微信)</li>
-<li>Email: skyz.cn#gmail.com</li>
-</ul>
-<hr>
-<h2 id="个人信息"><a href="#个人信息" class="headerlink" title="个人信息"></a>个人信息</h2><ul>
-<li>个人标签: 程宣峰  男 32岁 已婚</li>
-<li>工作年限: 10年</li>
-<li>个人主页: <a href="http://www.skyz.cn" target="_blank" rel="external">www.skyz.cn</a></li>
-<li>个人介绍: 10多年的Oracle HRMS以及周边系统建设经验.</li>
-</ul>
+            <p>创建一个临时表并insert 一百万条记录, 然后读取这一百万条记录写入文件.</p>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><h3 id="创建测试的表"><a href="#创建测试的表" class="headerlink" title="创建测试的表"></a>创建测试的表</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">CREATE TABLE source_data</div><div class="line">   ( x, y, z</div><div class="line">   , CONSTRAINT source_data_pk</div><div class="line">        PRIMARY KEY (x,y,z)</div><div class="line">   )</div><div class="line">   ORGANIZATION INDEX</div><div class="line">   AS</div><div class="line">      SELECT ROWNUM           AS x</div><div class="line">      ,      RPAD(&apos;x&apos;,50,&apos;x&apos;) AS y</div><div class="line">      ,      RPAD(&apos;y&apos;,50,&apos;y&apos;) AS z</div><div class="line">      FROM   dual</div><div class="line">      CONNECT BY ROWNUM &lt;= 1000000;</div></pre></td></tr></table></figure>
+<h3 id="存放测试文件的目录"><a href="#存放测试文件的目录" class="headerlink" title="存放测试文件的目录"></a>存放测试文件的目录</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CREATE DIRECTORY dump_dir AS &apos;/u01/app/oracle/dir&apos;;</div></pre></td></tr></table></figure>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><h3 id="启用并行的管道函数"><a href="#启用并行的管道函数" class="headerlink" title="启用并行的管道函数"></a>启用并行的管道函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line"> CREATE FUNCTION parallel_dump (</div><div class="line">                   p_source    IN SYS_REFCURSOR,</div><div class="line">                   p_filename  IN VARCHAR2,</div><div class="line">                   p_directory IN VARCHAR2</div><div class="line">                   ) RETURN dump_ntt</div><div class="line">                     PIPELINED</div><div class="line">                     PARALLEL_ENABLE (PARTITION p_source BY ANY) AS</div><div class="line"> </div><div class="line">      TYPE row_ntt IS TABLE OF VARCHAR2(32767);</div><div class="line">   v_rows    row_ntt;</div><div class="line">   v_file    UTL_FILE.FILE_TYPE;</div><div class="line">   v_buffer  VARCHAR2(32767);</div><div class="line">   v_sid     NUMBER;</div><div class="line">   v_name    VARCHAR2(128);</div><div class="line">   v_lines   PLS_INTEGER := 0;</div><div class="line">   c_eol     CONSTANT VARCHAR2(1) := CHR(10);</div><div class="line">   c_eollen  CONSTANT PLS_INTEGER := LENGTH(c_eol);</div><div class="line">   c_maxline CONSTANT PLS_INTEGER := 32767;</div><div class="line"></div><div class="line">BEGIN</div><div class="line"></div><div class="line">   SELECT sid INTO v_sid FROM v$mystat WHERE ROWNUM = 1;</div><div class="line">   v_name := p_filename || &apos;_&apos; || TO_CHAR(v_sid) || &apos;.txt&apos;;</div><div class="line">   v_file := UTL_FILE.FOPEN(p_directory, v_name, &apos;w&apos;, 32767);</div><div class="line"></div><div class="line">   LOOP</div><div class="line">     FETCH p_source BULK COLLECT INTO v_rows LIMIT 100;</div><div class="line"></div><div class="line">      FOR i IN 1 .. v_rows.COUNT LOOP</div><div class="line"></div><div class="line">         IF LENGTH(v_buffer) + c_eollen + LENGTH(v_rows(i)) &lt;= c_maxline THEN</div><div class="line">            v_buffer := v_buffer || c_eol || v_rows(i);</div><div class="line">         ELSE</div><div class="line">            IF v_buffer IS NOT NULL THEN</div><div class="line">               UTL_FILE.PUT_LINE(v_file, v_buffer);</div><div class="line">            END IF;</div><div class="line">            v_buffer := v_rows(i);</div><div class="line">         END IF;</div><div class="line"></div><div class="line">      END LOOP;</div><div class="line"></div><div class="line">      v_lines := v_lines + v_rows.COUNT;</div><div class="line"></div><div class="line">      EXIT WHEN p_source%NOTFOUND;</div><div class="line">   END LOOP;</div><div class="line">   CLOSE p_source;</div><div class="line"></div><div class="line">   UTL_FILE.PUT_LINE(v_file, v_buffer);</div><div class="line">   UTL_FILE.FCLOSE(v_file);</div><div class="line"></div><div class="line">   PIPE ROW (dump_ot(v_name, v_lines, v_sid));</div><div class="line">   RETURN;</div><div class="line"></div><div class="line">END parallel_dump;</div><div class="line">/</div></pre></td></tr></table></figure>
+<h3 id="拆成4个子任务来生成文件"><a href="#拆成4个子任务来生成文件" class="headerlink" title="拆成4个子任务来生成文件"></a>拆成4个子任务来生成文件</h3> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">SELECT *</div><div class="line"> FROM   TABLE(</div><div class="line">           parallel_dump(</div><div class="line">              CURSOR(SELECT /*+ PARALLEL(s,4) */</div><div class="line">                            x ||&apos;,&apos;||</div><div class="line">                            y ||&apos;,&apos;||</div><div class="line">                            z AS csv</div><div class="line">                     FROM   source_data s),</div><div class="line">              &apos;utl_file_parallel_pipelined&apos;,</div><div class="line">              &apos;DUMP_DIR&apos;</div><div class="line">              )) nt;</div></pre></td></tr></table></figure>
+<h3 id="生成的测试文件"><a href="#生成的测试文件" class="headerlink" title="生成的测试文件:"></a>生成的测试文件:</h3><table>
+<thead>
+<tr>
+<th>FILE_NAME</th>
+<th>NO_RECORDS</th>
+<th>SESSION_ID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>utl_file_parallel_pipelined_136.txt</td>
+<td>190758</td>
+<td>136</td>
+</tr>
+<tr>
+<td>utl_file_parallel_pipelined_135.txt</td>
+<td>192640</td>
+<td>135</td>
+</tr>
+<tr>
+<td>utl_file_parallel_pipelined_117.txt</td>
+<td>288960</td>
+<td>117</td>
+</tr>
+<tr>
+<td>utl_file_parallel_pipelined_121.txt</td>
+<td>327642</td>
+<td>121</td>
+</tr>
+</tbody>
+</table>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://www.oracle-developer.net/display.php?id=425" target="_blank" rel="external">tuning pl/sql file i/o</a></p>
 
         </div>
         <footer class="article-footer">
@@ -165,7 +205,7 @@
 
 
 
-    <a data-url="http://oracle.xyz/about/index.html" data-id="cj21sh0sv0001e0vpl7zsvn66" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://oracle.xyz/posts/plsql-parallel-util-file.html" data-id="cj21sh0sp0000e0vpdqt556tq" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -292,6 +332,23 @@
             
         </ul>
     </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/common-sql-package.html" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            工作相关的代码整理
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+</nav>
+
     
     <div class="widgets-container">
         
