@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="老代码">
 <meta property="og:description" content="工具发送邮件 cux_fnd_sendmail_pkg多个附件DECLARE  l_attachment_table cux_fnd_sendmail_pkg.t_attach_blob_table;  ...BEGIN  ...  --添加到附件表  l_attachment_table(1).t_name := l_attach_file_name;  l_attachment_table(">
 <meta property="og:image" content="http://oracle.xyz/gallery/package.jpg">
-<meta property="og:updated_time" content="2017-04-26T12:11:52.058Z">
+<meta property="og:updated_time" content="2017-05-02T07:45:47.076Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="工作相关的代码整理">
 <meta name="twitter:description" content="工具发送邮件 cux_fnd_sendmail_pkg多个附件DECLARE  l_attachment_table cux_fnd_sendmail_pkg.t_attach_blob_table;  ...BEGIN  ...  --添加到附件表  l_attachment_table(1).t_name := l_attach_file_name;  l_attachment_table(">
@@ -71,7 +71,7 @@
                                     <a class="main-nav-list-link" href="/">主页</a>
                                 </li>
                             
-                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DB/">DB</a></li></ul>
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Backend/">Backend</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DB/">DB</a></li></ul>
                                     
                                 <li class="main-nav-list-item" >
                                     <a class="main-nav-list-link" href="/about/index.html">关于</a>
@@ -168,6 +168,11 @@
 <h4 id="汉字转拼音-cux-fnd-pinyin-pkg"><a href="#汉字转拼音-cux-fnd-pinyin-pkg" class="headerlink" title="汉字转拼音 cux_fnd_pinyin_pkg"></a>汉字转拼音 <code>cux_fnd_pinyin_pkg</code></h4><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">SELECT cux_fnd_pinyin_pkg.gethzfullpy(&apos;程宣峰&apos;) FROM dual</div></pre></td></tr></table></figure>
 <h4 id="读取excel的内容-cux-fnd-read-xlsx-pkg"><a href="#读取excel的内容-cux-fnd-read-xlsx-pkg" class="headerlink" title="读取excel的内容  cux_fnd_read_xlsx_pkg"></a>读取excel的内容  <code>cux_fnd_read_xlsx_pkg</code></h4><figure class="highlight c"><table><tr><td class="code"><pre><div class="line"><span class="comment">/* 不建临时表使用excel上传文件. */</span></div><div class="line">cux_per_upload_email_pkg</div></pre></td></tr></table></figure>
 <h4 id="创建excel-cux-fnd-xls-pkg"><a href="#创建excel-cux-fnd-xls-pkg" class="headerlink" title="创建excel  cux_fnd_xls_pkg"></a>创建excel  <code>cux_fnd_xls_pkg</code></h4><figure class="highlight c"><table><tr><td class="code"><pre><div class="line"><span class="comment">// 创建excel报表  </span></div><div class="line">cux_hcm_abs_deduct_pkg.report</div></pre></td></tr></table></figure>
+<h4 id="导入文本文件csv"><a href="#导入文本文件csv" class="headerlink" title="导入文本文件csv"></a>导入文本文件csv</h4><h5 id="配置导入的form"><a href="#配置导入的form" class="headerlink" title="配置导入的form"></a>配置导入的form</h5><ol>
+<li>配置导入的功能, 表单为:CUX:上传本地数据. 参数为: APPL=”CUX” PROGRAME=”CUXPERUPLOADEMAIL”</li>
+<li>读取文本的API: cux_import_interface_api</li>
+</ol>
+<figure class="highlight"><table><tr><td class="code"><pre><div class="line">DECLARE</div><div class="line">  des   cux_import_interface_api.descriptor_t;</div><div class="line">  cells cux_import_interface_api.row_t;</div><div class="line">BEGIN</div><div class="line"></div><div class="line">  des := cux_import_interface_api.open(p_file_id, --fnd_lobs</div><div class="line">                                       p_file_cs, --字符集</div><div class="line">                                       p_delimiter, --分隔符</div><div class="line">                                       p_processing_id,</div><div class="line">                                       11); -- 11列</div><div class="line"></div><div class="line">  IF (cux_import_interface_api.is_empty(des) = TRUE) THEN</div><div class="line">    raise_application_error(-20001, 'File is empty');</div><div class="line">  END IF;</div><div class="line"></div><div class="line">  -- 略过标题</div><div class="line">  cux_import_interface_api.next_line(des);</div><div class="line">  IF (cux_import_interface_api.is_end_of_file(des) = TRUE) THEN</div><div class="line">    raise_application_error(-20001, 'File is empty');</div><div class="line">  END IF;</div><div class="line"></div><div class="line">  cux_import_interface_api.next_line(des);</div><div class="line">  WHILE (cux_import_interface_api.is_end_of_file(des) = FALSE) LOOP</div><div class="line">    -- 取当前行的所有列</div><div class="line">    cux_import_interface_api.get_cell_set(des, cells);</div><div class="line">  </div><div class="line">    dbms_output.put_line(cells(1)); -- 打印第一列</div><div class="line">    dbms_output.put_line(cells(2)); -- 打印第二列      </div><div class="line">    -- 读取下一行</div><div class="line">    cux_import_interface_api.next_line(des);</div><div class="line">  END LOOP;</div><div class="line">END;</div></pre></td></tr></table></figure>
 <h4 id="压缩文件"><a href="#压缩文件" class="headerlink" title="压缩文件"></a>压缩文件</h4><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">DECLARE</div><div class="line">  g_zipped_blob BLOB;</div><div class="line">BEGIN</div><div class="line">  FOR rec IN csr LOOP</div><div class="line">    cux_fnd_xls_pkg.add1file(g_zipped_blob,</div><div class="line">                             rec.file_name,</div><div class="line">                             rec.attachment_content);</div><div class="line">    cux_fnd_xls_pkg.finish_zip(g_zipped_blob, &apos;&apos;);</div><div class="line">  END LOOP;</div><div class="line">END;</div></pre></td></tr></table></figure>
 <h4 id="BPM-流程"><a href="#BPM-流程" class="headerlink" title="BPM 流程"></a>BPM 流程</h4><figure class="highlight c"><table><tr><td class="code"><pre><div class="line"><span class="comment">// 启动流程</span></div><div class="line">cux_bpm_utility_pkg.create_process</div><div class="line"><span class="comment">// 启动空流程</span></div><div class="line">cux_bpm_utility_pkg.create_notify</div><div class="line"><span class="comment">// 撤回</span></div><div class="line">cux_bpm_utility_pkg.abort_process</div><div class="line"><span class="comment">// 审批通过</span></div><div class="line">cux_bpm_utility_pkg.approve_process</div><div class="line"><span class="comment">// 拒绝</span></div><div class="line">cux_bpm_utility_pkg.reject_process</div><div class="line"><span class="comment">// 当前审批人</span></div><div class="line">cux_bpm_common_pkg.get_uuap_username</div><div class="line"><span class="comment">// 当前审批节点</span></div><div class="line">cux_bpm_utility_pkg.get_current_task_val</div></pre></td></tr></table></figure>
 <h4 id="MQ-数据同步"><a href="#MQ-数据同步" class="headerlink" title="MQ 数据同步"></a>MQ 数据同步</h4><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">hcm_common_pkg.call_plsql_main_json(p_plsql_api =&gt; &apos;cux_hcm_bo_pkg.get_pay_lines&apos;,</div><div class="line">				  p_msg_json  =&gt; l_msg,</div><div class="line">				  p_http_apex =&gt; &apos;APEX&apos;,</div><div class="line">				  o_errcode   =&gt; o_errcode,</div><div class="line">				  o_errmsg    =&gt; o_errmsg);</div></pre></td></tr></table></figure>
@@ -185,7 +190,7 @@
 
 
 
-    <a data-url="http://oracle.xyz/posts/common-sql-package.html" data-id="cj21ug7av0001n0vpz2xi2o0b" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://oracle.xyz/posts/common-sql-package.html" data-id="cj27k4vny0005qcvp61hgpqdu" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -348,6 +353,46 @@
                     <li>
                         
                         <div class="item-thumbnail">
+                            <a href="/posts/Spring-Boot-Mybatis-common-annotation.html" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Backend/">Backend</a></p>
+                            <p class="item-title"><a href="/posts/Spring-Boot-Mybatis-common-annotation.html" class="title">Spring Boot中MyBatis的传参方式</a></p>
+                            <p class="item-date"><time datetime="2017-05-02T12:49:05.000Z" itemprop="datePublished">2017-05-02</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/Intellij-IDEA-Spring-Boot-reload.html" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Backend/">Backend</a></p>
+                            <p class="item-title"><a href="/posts/Intellij-IDEA-Spring-Boot-reload.html" class="title">Intellij IDEA Spring Boot热加载</a></p>
+                            <p class="item-date"><time datetime="2017-05-02T09:00:09.000Z" itemprop="datePublished">2017-05-02</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
                             <a href="/posts/plsql-parallel-util-file.html" class="thumbnail">
     
     
@@ -414,7 +459,7 @@
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">分类</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/DB/">DB</a><span class="category-list-count">3</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Backend/">Backend</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DB/">DB</a><span class="category-list-count">3</span></li></ul>
         </div>
     </div>
 
@@ -432,6 +477,14 @@
                 
                     <li>
                         <a href="http://fex.baidu.com">FEX</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://reeze.cn">夏绪宏</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://blog.didispace.com">程序猿DD</a>
                     </li>
                 
             </ul>

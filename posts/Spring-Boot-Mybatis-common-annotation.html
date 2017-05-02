@@ -3,19 +3,22 @@
 <head>
     <meta charset="utf-8">
     
-    <title>个人介绍 | 老代码</title>
+    <title>Spring Boot中MyBatis的传参方式 | 老代码</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-    <meta name="description" content="联系方式 手机: 18607935958 (微信) Email: skyz.cn#gmail.com   个人信息 个人标签: 程宣峰  男 32岁 已婚 工作年限: 10年 个人主页: www.skyz.cn 个人介绍: 10多年的Oracle HRMS以及周边系统建设经验.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="个人介绍">
-<meta property="og:url" content="http://oracle.xyz/about/index.html">
+        <meta name="keywords" content="Spring" />
+    
+    <meta name="description" content="有三种传参方式@Param@Insert(&quot;INSERT INTO USER(NAME, AGE) VALUES(#&amp;#123;name&amp;#125;, #&amp;#123;age&amp;#125;)&quot;)int insert(@Param(&quot;name&quot;) String name, @Param(&quot;age&quot;) Integer age); MapMap&amp;lt;String, Object&amp;gt; map = new">
+<meta name="keywords" content="Spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Boot中MyBatis的传参方式">
+<meta property="og:url" content="http://oracle.xyz/posts/Spring-Boot-Mybatis-common-annotation.html">
 <meta property="og:site_name" content="老代码">
-<meta property="og:description" content="联系方式 手机: 18607935958 (微信) Email: skyz.cn#gmail.com   个人信息 个人标签: 程宣峰  男 32岁 已婚 工作年限: 10年 个人主页: www.skyz.cn 个人介绍: 10多年的Oracle HRMS以及周边系统建设经验.">
-<meta property="og:updated_time" content="2017-04-28T12:03:31.424Z">
+<meta property="og:description" content="有三种传参方式@Param@Insert(&quot;INSERT INTO USER(NAME, AGE) VALUES(#&amp;#123;name&amp;#125;, #&amp;#123;age&amp;#125;)&quot;)int insert(@Param(&quot;name&quot;) String name, @Param(&quot;age&quot;) Integer age); MapMap&amp;lt;String, Object&amp;gt; map = new">
+<meta property="og:updated_time" content="2017-05-02T13:03:15.912Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="个人介绍">
-<meta name="twitter:description" content="联系方式 手机: 18607935958 (微信) Email: skyz.cn#gmail.com   个人信息 个人标签: 程宣峰  男 32岁 已婚 工作年限: 10年 个人主页: www.skyz.cn 个人介绍: 10多年的Oracle HRMS以及周边系统建设经验.">
+<meta name="twitter:title" content="Spring Boot中MyBatis的传参方式">
+<meta name="twitter:description" content="有三种传参方式@Param@Insert(&quot;INSERT INTO USER(NAME, AGE) VALUES(#&amp;#123;name&amp;#125;, #&amp;#123;age&amp;#125;)&quot;)int insert(@Param(&quot;name&quot;) String name, @Param(&quot;age&quot;) Integer age); MapMap&amp;lt;String, Object&amp;gt; map = new">
     
 
     
@@ -125,37 +128,52 @@
                         <div class="main-body-header">
     <h1 class="header">
     
-    <em class="page-title-link" data-url="/about/index.html">个人介绍</em>
+    <a class="page-title-link" href="/categories/Backend/">Backend</a>
     </h1>
 </div>
                         <div class="main-body-content">
-                            <article id="page-undefined" class="article article-single article-type-page" itemscope itemprop="blogPost">
+                            <article id="post-Spring-Boot-Mybatis-common-annotation" class="article article-single article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             <header class="article-header">
                 
     
         <h1 class="article-title" itemprop="name">
-        个人介绍
+        Spring Boot中MyBatis的传参方式
         </h1>
     
 
             </header>
         
         
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/Spring-Boot-Mybatis-common-annotation.html" class="article-date">
+            <time datetime="2017-05-02T12:49:05.000Z" itemprop="datePublished">2017-05-02</time>
+        </a>
+    </div>
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Spring/">Spring</a>
+    </div>
+
+            </div>
+        
         
         <div class="article-entry" itemprop="articleBody">
-            <h2 id="联系方式"><a href="#联系方式" class="headerlink" title="联系方式"></a>联系方式</h2><ul>
-<li>手机: 18607935958 (微信)</li>
-<li>Email: skyz.cn#gmail.com</li>
-</ul>
-<hr>
-<h2 id="个人信息"><a href="#个人信息" class="headerlink" title="个人信息"></a>个人信息</h2><ul>
-<li>个人标签: 程宣峰  男 32岁 已婚</li>
-<li>工作年限: 10年</li>
-<li>个人主页: <a href="http://www.skyz.cn" target="_blank" rel="external">www.skyz.cn</a></li>
-<li>个人介绍: 10多年的Oracle HRMS以及周边系统建设经验.</li>
-</ul>
+            <h2 id="有三种传参方式"><a href="#有三种传参方式" class="headerlink" title="有三种传参方式"></a>有三种传参方式</h2><h3 id="Param"><a href="#Param" class="headerlink" title="@Param"></a>@Param</h3><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="meta">@Insert</span>(<span class="string">"INSERT INTO USER(NAME, AGE) VALUES(#&#123;name&#125;, #&#123;age&#125;)"</span>)</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">insert</span><span class="params">(@Param(<span class="string">"name"</span>)</span> String name, @<span class="title">Param</span><span class="params">(<span class="string">"age"</span>)</span> Integer age)</span>;</div></pre></td></tr></table></figure>
+<h3 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h3><figure class="highlight java"><table><tr><td class="code"><pre><div class="line">Map&lt;String, Object&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</div><div class="line">map.put(<span class="string">"name"</span>, <span class="string">"CCC"</span>);</div><div class="line">map.put(<span class="string">"age"</span>, <span class="number">40</span>);</div><div class="line">userMapper.insertByMap(map);</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="meta">@Insert</span>(<span class="string">"INSERT INTO USER(NAME, AGE) VALUES(#&#123;name,jdbcType=VARCHAR&#125;, #&#123;age,jdbcType=INTEGER&#125;)"</span>)</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">insertByMap</span><span class="params">(Map&lt;String, Object&gt; map)</span></span>;</div></pre></td></tr></table></figure>
+<h3 id="Object"><a href="#Object" class="headerlink" title="Object"></a>Object</h3><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="meta">@Insert</span>(<span class="string">"INSERT INTO USER(NAME, AGE) VALUES(#&#123;name&#125;, #&#123;age&#125;)"</span>)</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">insertByUser</span><span class="params">(User user)</span></span>;</div></pre></td></tr></table></figure>
+<h3 id="返回结果的mapping-Result"><a href="#返回结果的mapping-Result" class="headerlink" title="返回结果的mapping-Result"></a>返回结果的mapping-Result</h3><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="meta">@Results</span>(&#123;</div><div class="line">    <span class="meta">@Result</span>(property = <span class="string">"name"</span>, column = <span class="string">"name"</span>),</div><div class="line">    <span class="meta">@Result</span>(property = <span class="string">"age"</span>, column = <span class="string">"age"</span>)</div><div class="line">&#125;)</div><div class="line"><span class="meta">@Select</span>(<span class="string">"SELECT name, age FROM user"</span>)</div><div class="line"><span class="function">List&lt;User&gt; <span class="title">findAll</span><span class="params">()</span></span>;</div></pre></td></tr></table></figure>
+<h3 id="增删改查"><a href="#增删改查" class="headerlink" title="增删改查"></a>增删改查</h3><figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserMapper</span> </span>&#123;</div><div class="line">    <span class="meta">@Select</span>(<span class="string">"SELECT * FROM user WHERE name = #&#123;name&#125;"</span>)</div><div class="line">    <span class="function">User <span class="title">findByName</span><span class="params">(@Param(<span class="string">"name"</span>)</span> String name)</span>;</div><div class="line">    <span class="meta">@Insert</span>(<span class="string">"INSERT INTO user(name, age) VALUES(#&#123;name&#125;, #&#123;age&#125;)"</span>)</div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">insert</span><span class="params">(@Param(<span class="string">"name"</span>)</span> String name, @<span class="title">Param</span><span class="params">(<span class="string">"age"</span>)</span> Integer age)</span>;</div><div class="line">    <span class="meta">@Update</span>(<span class="string">"UPDATE user SET age=#&#123;age&#125; WHERE name=#&#123;name&#125;"</span>)</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">(User user)</span></span>;</div><div class="line">    <span class="meta">@Delete</span>(<span class="string">"DELETE FROM user WHERE id =#&#123;id&#125;"</span>)</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">delete</span><span class="params">(Long id)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ol>
+<li><a href="http://blog.didispace.com/mybatisinfo/" target="_blank" rel="external">Spring Boot中使用MyBatis注解配置详解</a></li>
+<li><a href="http://www.mybatis.org/mybatis-3/zh/java-api.html" target="_blank" rel="external">Mybatis Java API</a></li>
+</ol>
 
         </div>
         <footer class="article-footer">
@@ -163,7 +181,7 @@
 
 
 
-    <a data-url="http://oracle.xyz/about/index.html" data-id="cj27k4vnj0001qcvpmxn87j2o" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://oracle.xyz/posts/Spring-Boot-Mybatis-common-annotation.html" data-id="cj27k4vnz0006qcvp8wmg443s" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -290,6 +308,23 @@
             
         </ul>
     </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/Intellij-IDEA-Spring-Boot-reload.html" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            Intellij IDEA Spring Boot热加载
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+</nav>
+
     
     <div class="widgets-container">
         
