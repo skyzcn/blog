@@ -15,7 +15,7 @@
 <meta property="og:url" content="http://oracle.xyz/posts/Spring-parameter-binding.html">
 <meta property="og:site_name" content="老代码">
 <meta property="og:description" content="参数绑定相关注解 @RequestParam，绑定单个请求数据，可以是URL中的数据，表单提交的数据或上传的文件；  @PathVariable，绑定URL模板变量值；  @CookieValue，绑定Cookie数据；  @RequestHeader，绑定请求头数据；  @ModelAttribute，绑定数据到Model；  @SessionAttributes，绑定数据到Session；">
-<meta property="og:updated_time" content="2017-05-08T08:46:48.786Z">
+<meta property="og:updated_time" content="2017-05-08T08:56:58.939Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring参数绑定">
 <meta name="twitter:description" content="参数绑定相关注解 @RequestParam，绑定单个请求数据，可以是URL中的数据，表单提交的数据或上传的文件；  @PathVariable，绑定URL模板变量值；  @CookieValue，绑定Cookie数据；  @RequestHeader，绑定请求头数据；  @ModelAttribute，绑定数据到Model；  @SessionAttributes，绑定数据到Session；">
@@ -273,13 +273,29 @@ var _hmt = _hmt || [];
 <li>HTML</li>
 </ul>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="keyword">var</span> params = &#123;</div><div class="line">    <span class="string">"firstName"</span>: <span class="string">"张"</span>,</div><div class="line">    <span class="string">"lastName"</span>: <span class="string">"三"</span>,   </div><div class="line">&#125;;</div><div class="line"></div><div class="line">$.ajax(&#123;</div><div class="line">    <span class="attr">type</span>: <span class="string">'post'</span>,</div><div class="line">    <span class="attr">url</span>: <span class="string">'json.do'</span>,</div><div class="line">    <span class="attr">contentType</span>:<span class="string">'application/json;charset=utf-8'</span>,</div><div class="line">    <span class="attr">dataType</span>: <span class="string">'json'</span>,</div><div class="line">    <span class="attr">data</span>: <span class="built_in">JSON</span>.stringify(params),</div><div class="line">    <span class="attr">success</span>: <span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(data);</div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h1 id="XML"><a href="#XML" class="headerlink" title="XML"></a>XML</h1><ul>
+<li>pom.xml</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.dataformat<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-dataformat-xml<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
+<ul>
+<li>Model</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> String firstName;</div><div class="line">    <span class="keyword">private</span> String lastName;</div><div class="line">  ...</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>Controller</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><div class="line"><span class="meta">@RequestMapping</span>(<span class="string">"xml.do"</span>)</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">xml</span><span class="params">(@RequestBody User user)</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> user;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>Postman</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><div class="line">POST /xml HTTP/1.1</div><div class="line">Host: localhost:8080</div><div class="line">Content-Type: application/xml</div><div class="line">Cache-Control: no-cache</div><div class="line">Postman-Token: 03933f48-c29b-bfb8-bb10-29ed5c2c237c</div><div class="line"></div><div class="line">&lt;user&gt;</div><div class="line">	&lt;firstName&gt;张&lt;/firstName&gt;</div><div class="line">	&lt;lastName&gt;三&lt;/lastName&gt;</div><div class="line">&lt;/user&gt;</div></pre></td></tr></table></figure>
         </div>
         <footer class="article-footer">
             
 
 
 
-    <a data-url="http://oracle.xyz/posts/Spring-parameter-binding.html" data-id="cj2fsuqy80004m8vpi8ekutez" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://oracle.xyz/posts/Spring-parameter-binding.html" data-id="cj2fw6wjd0005dwvpyewcft2u" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
