@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>PLSQL并行处理的例子-parallel | 老代码</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="" />
+    
+    <meta name="description" content="创建一个临时表并insert 一百万条记录, 然后读取这一百万条记录写入文件. 准备创建测试的表CREATE TABLE source_data   ( x, y, z   , CONSTRAINT source_data_pk        PRIMARY KEY (x,y,z)   )   ORGANIZATION INDEX   AS      SELECT ROWNUM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PLSQL并行处理的例子-parallel">
+<meta property="og:url" content="http://oracle.xyz/posts/plsql-parallel-util-file.html">
+<meta property="og:site_name" content="老代码">
+<meta property="og:description" content="创建一个临时表并insert 一百万条记录, 然后读取这一百万条记录写入文件. 准备创建测试的表CREATE TABLE source_data   ( x, y, z   , CONSTRAINT source_data_pk        PRIMARY KEY (x,y,z)   )   ORGANIZATION INDEX   AS      SELECT ROWNUM">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://oracle.xyz/gallery/4.jpg">
+<meta property="og:updated_time" content="2017-10-13T05:28:07.116Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PLSQL并行处理的例子-parallel">
+<meta name="twitter:description" content="创建一个临时表并insert 一百万条记录, 然后读取这一百万条记录写入文件. 准备创建测试的表CREATE TABLE source_data   ( x, y, z   , CONSTRAINT source_data_pk        PRIMARY KEY (x,y,z)   )   ORGANIZATION INDEX   AS      SELECT ROWNUM">
+<meta name="twitter:image" content="http://oracle.xyz/gallery/4.jpg">
+    
+
+    
+        <link rel="alternate" href="/" title="老代码" type="application/atom+xml" />
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">代码片段</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Backend/">Backend</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/DB/">DB</a></li></ul>
+                                    
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/about/index.html">关于</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/DB/">DB</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-plsql-parallel-util-file" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        PLSQL并行处理的例子-parallel
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/posts/plsql-parallel-util-file.html" class="article-date">
+            <time datetime="2017-04-28T11:58:27.000Z" itemprop="datePublished">2017-04-28</time>
+        </a>
+    </div>
+
+                
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <p><img src="/gallery/4.jpg" alt=""></p>
+<p>创建一个临时表并insert 一百万条记录, 然后读取这一百万条记录写入文件.</p>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><h3 id="创建测试的表"><a href="#创建测试的表" class="headerlink" title="创建测试的表"></a>创建测试的表</h3><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">CREATE TABLE source_data</div><div class="line">   ( x, y, z</div><div class="line">   , CONSTRAINT source_data_pk</div><div class="line">        PRIMARY KEY (x,y,z)</div><div class="line">   )</div><div class="line">   ORGANIZATION INDEX</div><div class="line">   AS</div><div class="line">      SELECT ROWNUM           AS x</div><div class="line">      ,      RPAD(&apos;x&apos;,50,&apos;x&apos;) AS y</div><div class="line">      ,      RPAD(&apos;y&apos;,50,&apos;y&apos;) AS z</div><div class="line">      FROM   dual</div><div class="line">      CONNECT BY ROWNUM &lt;= 1000000;</div></pre></td></tr></table></figure>
+<h3 id="存放测试文件的目录"><a href="#存放测试文件的目录" class="headerlink" title="存放测试文件的目录"></a>存放测试文件的目录</h3><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">CREATE DIRECTORY dump_dir AS &apos;/u01/app/oracle/dir&apos;;</div></pre></td></tr></table></figure>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><h3 id="启用并行的管道函数"><a href="#启用并行的管道函数" class="headerlink" title="启用并行的管道函数"></a>启用并行的管道函数</h3><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line"> CREATE FUNCTION parallel_dump (</div><div class="line">                   p_source    IN SYS_REFCURSOR,</div><div class="line">                   p_filename  IN VARCHAR2,</div><div class="line">                   p_directory IN VARCHAR2</div><div class="line">                   ) RETURN dump_ntt</div><div class="line">                     PIPELINED</div><div class="line">                     PARALLEL_ENABLE (PARTITION p_source BY ANY) AS</div><div class="line"> </div><div class="line">      TYPE row_ntt IS TABLE OF VARCHAR2(32767);</div><div class="line">   v_rows    row_ntt;</div><div class="line">   v_file    UTL_FILE.FILE_TYPE;</div><div class="line">   v_buffer  VARCHAR2(32767);</div><div class="line">   v_sid     NUMBER;</div><div class="line">   v_name    VARCHAR2(128);</div><div class="line">   v_lines   PLS_INTEGER := 0;</div><div class="line">   c_eol     CONSTANT VARCHAR2(1) := CHR(10);</div><div class="line">   c_eollen  CONSTANT PLS_INTEGER := LENGTH(c_eol);</div><div class="line">   c_maxline CONSTANT PLS_INTEGER := 32767;</div><div class="line"></div><div class="line">BEGIN</div><div class="line"></div><div class="line">   SELECT sid INTO v_sid FROM v$mystat WHERE ROWNUM = 1;</div><div class="line">   v_name := p_filename || &apos;_&apos; || TO_CHAR(v_sid) || &apos;.txt&apos;;</div><div class="line">   v_file := UTL_FILE.FOPEN(p_directory, v_name, &apos;w&apos;, 32767);</div><div class="line"></div><div class="line">   LOOP</div><div class="line">     FETCH p_source BULK COLLECT INTO v_rows LIMIT 100;</div><div class="line"></div><div class="line">      FOR i IN 1 .. v_rows.COUNT LOOP</div><div class="line"></div><div class="line">         IF LENGTH(v_buffer) + c_eollen + LENGTH(v_rows(i)) &lt;= c_maxline THEN</div><div class="line">            v_buffer := v_buffer || c_eol || v_rows(i);</div><div class="line">         ELSE</div><div class="line">            IF v_buffer IS NOT NULL THEN</div><div class="line">               UTL_FILE.PUT_LINE(v_file, v_buffer);</div><div class="line">            END IF;</div><div class="line">            v_buffer := v_rows(i);</div><div class="line">         END IF;</div><div class="line"></div><div class="line">      END LOOP;</div><div class="line"></div><div class="line">      v_lines := v_lines + v_rows.COUNT;</div><div class="line"></div><div class="line">      EXIT WHEN p_source%NOTFOUND;</div><div class="line">   END LOOP;</div><div class="line">   CLOSE p_source;</div><div class="line"></div><div class="line">   UTL_FILE.PUT_LINE(v_file, v_buffer);</div><div class="line">   UTL_FILE.FCLOSE(v_file);</div><div class="line"></div><div class="line">   PIPE ROW (dump_ot(v_name, v_lines, v_sid));</div><div class="line">   RETURN;</div><div class="line"></div><div class="line">END parallel_dump;</div><div class="line">/</div></pre></td></tr></table></figure>
+<h3 id="拆成4个子任务来生成文件"><a href="#拆成4个子任务来生成文件" class="headerlink" title="拆成4个子任务来生成文件"></a>拆成4个子任务来生成文件</h3> <figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">SELECT *</div><div class="line"> FROM   TABLE(</div><div class="line">           parallel_dump(</div><div class="line">              CURSOR(SELECT /*+ PARALLEL(s,4) */</div><div class="line">                            x ||&apos;,&apos;||</div><div class="line">                            y ||&apos;,&apos;||</div><div class="line">                            z AS csv</div><div class="line">                     FROM   source_data s),</div><div class="line">              &apos;utl_file_parallel_pipelined&apos;,</div><div class="line">              &apos;DUMP_DIR&apos;</div><div class="line">              )) nt;</div></pre></td></tr></table></figure>
+<h3 id="生成的测试文件"><a href="#生成的测试文件" class="headerlink" title="生成的测试文件:"></a>生成的测试文件:</h3><table>
+<thead>
+<tr>
+<th>FILE_NAME</th>
+<th>NO_RECORDS</th>
+<th>SESSION_ID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>utl_file_parallel_pipelined_136.txt</td>
+<td>190758</td>
+<td>136</td>
+</tr>
+<tr>
+<td>utl_file_parallel_pipelined_135.txt</td>
+<td>192640</td>
+<td>135</td>
+</tr>
+<tr>
+<td>utl_file_parallel_pipelined_117.txt</td>
+<td>288960</td>
+<td>117</td>
+</tr>
+<tr>
+<td>utl_file_parallel_pipelined_121.txt</td>
+<td>327642</td>
+<td>121</td>
+</tr>
+</tbody>
+</table>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://www.oracle-developer.net/display.php?id=425" target="_blank" rel="external">tuning pl/sql file i/o</a><br><a href="http://www.williamrobertson.net/documents/parallel-plsql-launcher.html" target="_blank" rel="external">Parallel PL/SQL launcher</a></p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="http://oracle.xyz/posts/plsql-parallel-util-file.html" data-id="cj8peflp0000b1gvp6i7k8p4v" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="twitter" href="/" target="_blank">
+                        <i class="icon fa fa-twitter"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="/" target="_blank">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="google-plus" href="/" target="_blank">
+                        <i class="icon fa fa-google-plus"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/skyzcn" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="weibo" href="http://weibo.com/skyzcn" target="_blank">
+                        <i class="icon fa fa-weibo"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/" target="_blank">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/Intellij-IDEA-Spring-Boot-reload.html" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            Intellij IDEA Spring Boot热加载
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/posts/common-sql-package.html" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">工作相关的代码整理</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/Spring-parameter-binding.html" class="thumbnail">
+    
+    
+        <span style="background-image:url(/gallery/6.jpg)" alt="Spring参数绑定" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Backend/">Backend</a></p>
+                            <p class="item-title"><a href="/posts/Spring-parameter-binding.html" class="title">Spring参数绑定</a></p>
+                            <p class="item-date"><time datetime="2017-05-08T07:17:16.000Z" itemprop="datePublished">2017-05-08</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/Spring-Boot-Mybatis-common-annotation.html" class="thumbnail">
+    
+    
+        <span style="background-image:url(/gallery/5.jpg)" alt="Spring Boot中MyBatis的传参方式" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Backend/">Backend</a></p>
+                            <p class="item-title"><a href="/posts/Spring-Boot-Mybatis-common-annotation.html" class="title">Spring Boot中MyBatis的传参方式</a></p>
+                            <p class="item-date"><time datetime="2017-05-02T12:49:05.000Z" itemprop="datePublished">2017-05-02</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/Intellij-IDEA-Spring-Boot-reload.html" class="thumbnail">
+    
+    
+        <span style="background-image:url(/gallery/3.jpg)" alt="Intellij IDEA Spring Boot热加载" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Backend/">Backend</a></p>
+                            <p class="item-title"><a href="/posts/Intellij-IDEA-Spring-Boot-reload.html" class="title">Intellij IDEA Spring Boot热加载</a></p>
+                            <p class="item-date"><time datetime="2017-05-02T09:00:09.000Z" itemprop="datePublished">2017-05-02</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/plsql-parallel-util-file.html" class="thumbnail">
+    
+    
+        <span style="background-image:url(/gallery/4.jpg)" alt="PLSQL并行处理的例子-parallel" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/DB/">DB</a></p>
+                            <p class="item-title"><a href="/posts/plsql-parallel-util-file.html" class="title">PLSQL并行处理的例子-parallel</a></p>
+                            <p class="item-date"><time datetime="2017-04-28T11:58:27.000Z" itemprop="datePublished">2017-04-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/posts/common-sql-package.html" class="thumbnail">
+    
+    
+        <span style="background-image:url(/gallery/1.jpg)" alt="工作相关的代码整理" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/DB/">DB</a></p>
+                            <p class="item-title"><a href="/posts/common-sql-package.html" class="title">工作相关的代码整理</a></p>
+                            <p class="item-date"><time datetime="2017-04-21T13:53:51.000Z" itemprop="datePublished">2017-04-21</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Backend/">Backend</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/DB/">DB</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://www.oracle-developer.net">oracle-developer</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://fex.baidu.com">FEX</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://reeze.cn">夏绪宏</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://blog.didispace.com">程序猿DD</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2017 <a href="http://oracle.xyz">程宣峰</a> <a href="http://www.miitbeian.gov.cn/" target="_blank"> 京ICP备16033168号-1 </a></p>				
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>				
+            </div>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
